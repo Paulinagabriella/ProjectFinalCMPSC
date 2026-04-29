@@ -2,68 +2,81 @@
 
 ## Project Description
 
-Thought Organizer is a Python-based cognitive accessibility tool designed to help users structure overwhelming or complex thoughts into clearer decisions. The program guides users through a recursive decision tree of yes/no questions and provides organized suggestions based on their responses.
+Thought Organizer is a Python-based cognitive accessibility tool designed to help users organize overwhelming or complex thoughts into clearer decisions and actionable next steps.
 
-This project focuses on cognitive accessibility by supporting users who may struggle with organizing information, processing multiple thoughts, or making decisions.
+The application allows users to input multiple thoughts, assign categories, rate urgency and importance, and receive structured recommendations through a recursive decision tree. The program then ranks thoughts by priority and generates a personalized report.
+
+This project focuses on **cognitive accessibility**, helping users who may struggle with decision-making, prioritization, or processing multiple thoughts at once.
+
+---
 
 ## Features
 
-- Object-Oriented Programming using custom classes
-- Tree-based data structure for decision making
-- Recursive traversal of decision tree
-- Input validation for all user responses
-- Error handling for invalid inputs
-- Summary report of all responses
-- Structured suggestion generation
+- Graphical User Interface (GUI) built with Tkinter
+- Add and organize multiple thoughts
+- Assign categories to thoughts
+- Rate urgency and importance (1–5)
+- Automatic priority score calculation
+- Manual sorting of thoughts by priority
+- Recursive decision tree for personalized suggestions
+- Higher-order function usage with `map()`
+- Save generated reports to a text file
+- Full input validation and error handling
 
-## Data Structures and Concepts Used
+---
 
-This project demonstrates several CMPSC 132 concepts:
+## Technical Concepts Demonstrated
 
-- **Classes / OOP**
-  - `ThoughtNode`
-  - `ThoughtOrganizer`
+This project incorporates several CMPSC 132 concepts:
 
-- **Tree Data Structure**
-  - Decision tree implemented with linked node references
+### Object-Oriented Programming
+- `Thought`
+- `ThoughtNode`
+- `ThoughtOrganizer`
+- `ThoughtOrganizerGUI`
 
-- **Recursion**
-  - Recursive traversal of the decision tree
+### Data Structures
+- Lists for storing thoughts
+- Tree-based linked node structure for decision tree
 
-- **Lists**
-  - Stores user responses for summary output
+### Algorithms / Concepts
+- Recursion for tree traversal
+- Selection-sort style algorithm for priority ranking
+- Higher-order functions using `map()`
+- File I/O for saving reports
 
-- **Input Validation / Error Handling**
-  - Ensures only valid yes/no responses are accepted
+---
 
 ## How to Run
 
 1. Ensure Python 3 is installed.
 2. Clone or download this repository.
-3. Open the project directory.
-4. Run:
+3. Open the project folder.
+4. Run the program:
 
 ```bash
 python thought_organizer.py
 ```
 
-If needed:
+or if needed:
 
 ```bash
 python3 thought_organizer.py
 ```
 
-## Example Interaction
+---
 
-```text
-Welcome to Thought Organizer!
+## Example Workflow
 
-Are you trying to make a decision? (yes/no): yes
-Do you already know your options? (yes/no): no
+1. Enter one or more thoughts
+2. Assign categories
+3. Rate urgency and importance
+4. Answer decision tree questions
+5. Click **Organize Thoughts**
+6. Review ranked thoughts and recommendations
+7. Save report to file if desired
 
-Suggested next step:
-Start by listing all possible options, even if they are not perfect. Then narrow them down.
-```
+---
 
 ## File Structure
 
@@ -71,12 +84,17 @@ Start by listing all possible options, even if they are not perfect. Then narrow
 ThoughtOrganizer/
 │
 ├── thought_organizer.py
+├── thought_organizer_report.txt
 └── README.md
 ```
+
+---
 
 ## Author
 
 Paulina Chavez
+
+---
 
 ## Course
 
