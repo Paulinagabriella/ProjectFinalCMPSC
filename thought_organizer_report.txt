@@ -1,0 +1,141 @@
+Thought Organizer Project Report 
+
+Introduction 
+
+For my custom final project, I developed Thought Organizer, a Python-based cognitive 
+accessibility application designed to help users organize overwhelming thoughts into 
+clearer decisions and actionable next steps. While many accessibility tools focus on visual 
+or physical assistance, this project instead addresses cognitive accessibility, helping users 
+who may struggle with prioritization, decision-making, or processing multiple thoughts at 
+once. 
+
+The program allows users to enter multiple thoughts, categorize them, assign urgency and 
+importance ratings, and receive organized recommendations through a guided decision
+making process. It combines structured prioritization with a recursive decision tree to help 
+users break down complex mental tasks into manageable steps. 
+
+This project was created as a custom alternative to the standard final assignment and was 
+intentionally designed to demonstrate several core concepts from CMPSC 132 in a 
+meaningful, user-centered application. 
+
+Project Design and Functionality 
+
+The Thought Organizer provides users with a graphical user interface (GUI) built using 
+Python’s Tkinter library. Through the GUI, users can: 
+• Enter multiple thoughts they want to organize 
+• Assign each thought a category 
+• Rate each thought’s urgency and importance on a scale from 1–5 
+• Answer guided decision-tree questions using radio buttons 
+• Generate a structured report ranking their thoughts by priority 
+• Save the generated report to a text file 
+
+The application calculates a priority score for each thought by summing urgency and 
+importance values. Thoughts are then sorted from highest to lowest priority, allowing the 
+user to clearly identify what should be addressed first. 
+
+Additionally, the recursive decision tree analyzes the user’s responses to decision-making 
+questions and provides a personalized suggestion for how to approach their situation. 
+
+Technical Concepts Implemented 
+Object Oriented Programming 
+
+The project uses object-oriented programming extensively through four custom classes: 
+• Thought 
+o Represents an individual thought entered by the user, including text, 
+category, urgency, importance, and calculated priority score. 
+• ThoughtNode 
+o Represents a node in the recursive decision tree structure. 
+• ThoughtOrganizer 
+o Handles all core logic including thought storage, sorting, report generation, 
+recursion, and tree traversal. 
+• ThoughtOrganizerGUI 
+o Manages the graphical interface and user interaction through Tkinter. 
+This class-based design improves modularity, readability, and maintainability. 
+
+Tree-Based Data Structure 
+A decision tree is implemented using linked ThoughtNode objects. Each node stores: 
+• A question prompt 
+• A yes branch 
+• A no branch 
+• A suggestion (for leaf nodes) 
+
+This creates a branching tree structure that models guided decision-making and supports 
+multiple possible recommendation paths. 
+
+Recursion 
+The method recursive_tree_result() recursively traverses the decision tree based on the 
+user’s yes/no answers. 
+Each recursive call: 
+1. Checks whether the current node is a suggestion node 
+2. If not, moves to the yes or no branch 
+3. Continues recursively until a final recommendation is reached 
+This recursive approach allows elegant navigation of the tree without requiring iterative 
+branching logic. 
+
+Sorting Algorithm 
+The program manually sorts thoughts by priority score using a selection-sort style 
+algorithm. 
+
+The method sort_thoughts_by_priority(): 
+• Iterates through the list of thoughts 
+• Finds the highest-priority remaining thought 
+• Swaps it into the correct position 
+
+This demonstrates understanding of array/list manipulation and sorting algorithms without 
+relying on Python’s built-in sort methods. 
+
+Higher-Order Functions 
+The project incorporates functional programming concepts using Python’s map() function. 
+The method apply_to_scores(): 
+• Applies a lambda function to extract priority scores from all thoughts 
+• Returns the list of transformed scores 
+This demonstrates understanding of higher-order functions and functional-style 
+transformations. 
+
+Input Validation and Error Handling 
+The program validates all user input before processing: 
+• Ensures thought text is not empty 
+• Ensures urgency and importance are integers from 1–5 
+• Prevents report generation if no thoughts exist 
+• Prevents saving an empty report 
+• Uses try/except blocks for file saving and numeric conversion 
+These checks ensure robustness and proper handling of invalid or edge-case input. 
+
+Challenges and Problem-Solving 
+One of the primary challenges in this project was designing a recursive decision tree 
+structure that made logical sense while remaining useful for users. I had to carefully 
+organize the question flow so that each path led to meaningful and relevant suggestions. 
+Another challenge was integrating the backend logic with the Tkinter GUI. Connecting user 
+interface components such as text boxes, dropdown menus, radio buttons, and buttons to 
+the underlying program logic required careful event handling and state management. 
+Implementing sorting and report generation also required coordinating multiple data 
+structures and ensuring that displayed information remained accurate after sorting. 
+
+Future Improvements 
+Although the current version is fully functional, several future enhancements could 
+improve the project further: 
+• Expand the decision tree with more detailed question branches 
+• Add persistent save/load functionality for previous sessions 
+• Allow editing or deleting previously entered thoughts 
+• Add data visualization for priority scores using graphs/charts 
+• Incorporate natural language processing for smarter suggestions 
+These additions could make the application even more powerful and user-friendly. 
+
+Conclusion 
+Overall, the Thought Organizer project successfully combines accessibility-focused design 
+with key programming concepts from CMPSC 132. The project demonstrates: 
+• Object-oriented programming 
+• Tree-based data structures 
+• Recursion 
+• Sorting algorithms 
+• Higher-order functions 
+• GUI development 
+• Input validation 
+• Error handling 
+• File I/O 
+By applying these concepts in a practical and human-centered way, the project goes 
+beyond a traditional technical assignment and demonstrates how programming can be 
+used to solve real-world cognitive accessibility challenges. 
+Developing this project strengthened my understanding of recursive structures, GUI 
+programming, software design, and integrating multiple programming paradigms into a 
+cohesive application.
