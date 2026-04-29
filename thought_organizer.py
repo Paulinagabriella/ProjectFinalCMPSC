@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
-
+# Represents a single user thought with priority data
 class Thought:
     def __init__(self, text, category, urgency, importance):
         self.text = text
@@ -27,7 +27,7 @@ class Thought:
             " | Score: " + str(self.priority_score)
         )
 
-
+# Node used in the recursive decision tree
 class ThoughtNode:
     def __init__(self, question=None, yes_branch=None, no_branch=None, suggestion=None):
         self.question = question
@@ -35,12 +35,13 @@ class ThoughtNode:
         self.no_branch = no_branch
         self.suggestion = suggestion
 
-
+# Handles all backend thought organization logic
 class ThoughtOrganizer:
     def __init__(self):
         self.thoughts = []
         self.root = self.build_decision_tree()
 
+    # Builds the recursive decision tree used for recommendations
     def build_decision_tree(self):
         return ThoughtNode(
             "Are you trying to make a decision?",
@@ -79,6 +80,7 @@ class ThoughtOrganizer:
     def add_thought(self, thought):
         self.thoughts.append(thought)
 
+    # Sorts thoughts from highest to lowest priority score
     def sort_thoughts_by_priority(self):
         for i in range(len(self.thoughts)):
             max_index = i
@@ -91,9 +93,11 @@ class ThoughtOrganizer:
             self.thoughts[i] = self.thoughts[max_index]
             self.thoughts[max_index] = temp
 
+    # Applies a function to every thought's priority score using map()
     def apply_to_scores(self, function):
         return list(map(function, self.thoughts))
 
+    # Recursively traverses the decision tree based on user answers
     def recursive_tree_result(self, node, answers, index=0):
         if node.suggestion is not None:
             return node.suggestion
@@ -106,6 +110,7 @@ class ThoughtOrganizer:
         else:
             return self.recursive_tree_result(node.no_branch, answers, index + 1)
 
+    # Generates the final formatted report shown to the user
     def create_report(self, answers):
         self.sort_thoughts_by_priority()
 
@@ -114,6 +119,7 @@ class ThoughtOrganizer:
 
         report += "Ranked Thoughts:\n"
 
+        # Selection-sort style ranking of thoughts by priority
         for i in range(len(self.thoughts)):
             thought = self.thoughts[i]
             report += "\n" + str(i + 1) + ". " + thought.text + "\n"
@@ -146,7 +152,7 @@ class ThoughtOrganizer:
 
         return report
 
-
+# Manages the Tkinter graphical user interface
 class ThoughtOrganizerGUI:
     def __init__(self, root):
         self.root = root
@@ -262,6 +268,7 @@ class ThoughtOrganizerGUI:
         no_button = tk.Radiobutton(frame, text="No", variable=variable, value="no")
         no_button.pack(side=tk.LEFT)
 
+    # Ensure urgency/importance are valid integers from 1-5
     def validate_number(self, value):
         try:
             number = int(value)
