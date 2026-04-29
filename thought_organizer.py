@@ -1,9 +1,5 @@
-class ThoughtNode:
-    def __init__(self, question=None, yes_branch=None, no_branch=None, suggestion=None):
-        self.question = question
-        self.yes_branch = yes_branch
-        self.no_branch = no_branch
-        self.suggestion = suggestion
+import tkinter as tk
+from tkinter import messagebox
 
 
 class Thought:
@@ -23,121 +19,124 @@ class Thought:
             return "Low Priority"
 
 
-class ThoughtOrganizer:
-    def __init__(self):
+class ThoughtOrganizerGUI:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Thought Organizer")
+        self.root.geometry("650x600")
+
         self.thoughts = []
-        self.responses = []
-        self.root = self.build_decision_tree()
 
-    def build_decision_tree(self):
-        return ThoughtNode(
-            "Are you trying to make a decision right now?",
-            yes_branch=ThoughtNode(
-                "Do you already know your options?",
-                yes_branch=ThoughtNode(
-                    "Are you worried about choosing the wrong option?",
-                    yes_branch=ThoughtNode(
-                        suggestion="Compare the pros and cons of each option. Then choose the option with the best long-term benefit and lowest serious risk."
-                    ),
-                    no_branch=ThoughtNode(
-                        suggestion="Choose the option that best matches your values, goal, and current situation."
-                    )
-                ),
-                no_branch=ThoughtNode(
-                    suggestion="Start by listing at least three possible options. Even imperfect options can help you think more clearly."
-                )
-            ),
-            no_branch=ThoughtNode(
-                "Are you feeling overwhelmed by too many thoughts?",
-                yes_branch=ThoughtNode(
-                    "Can you identify one main problem?",
-                    yes_branch=ThoughtNode(
-                        suggestion="Focus on the main problem first. Break it into smaller steps and complete the easiest step first."
-                    ),
-                    no_branch=ThoughtNode(
-                        suggestion="Do a brain dump. Write everything down, then group similar thoughts into categories."
-                    )
-                ),
-                no_branch=ThoughtNode(
-                    suggestion="Take a short break, then write one clear sentence describing what you need to organize."
-                )
-            )
+        self.title_label = tk.Label(
+            root,
+            text="Thought Organizer",
+            font=("Arial", 22, "bold")
         )
+        self.title_label.pack(pady=10)
 
-    def get_yes_no(self, question):
-        while True:
-            try:
-                answer = input(question + " (yes/no): ").strip().lower()
+        self.description_label = tk.Label(
+            root,
+            text="Organize overwhelming thoughts into clearer decisions.",
+            font=("Arial", 12)
+        )
+        self.description_label.pack(pady=5)
 
-                if answer == "yes" or answer == "y":
-                    return "yes"
-                elif answer == "no" or answer == "n":
-                    return "no"
-                else:
-                    print("Please type yes or no.")
-            except:
-                print("Something went wrong. Please try again.")
+        self.thought_label = tk.Label(root, text="Enter your thought:")
+        self.thought_label.pack()
 
-    def get_number(self, question, minimum, maximum):
-        valid = False
-        number = 0
+        self.thought_entry = tk.Entry(root, width=60)
+        self.thought_entry.pack(pady=5)
 
-        while not valid:
-            try:
-                number = int(input(question))
-                if number >= minimum and number <= maximum:
-                    valid = True
-                else:
-                    print("Please enter a number from", minimum, "to", maximum)
-            except:
-                print("Invalid input. Please enter a number.")
+        self.category_label = tk.Label(root, text="Choose a category:")
+        self.category_label.pack()
 
-        return number
+        self.category_var = tk.StringVar()
+        self.category_var.set("School")
 
-    def get_category(self):
-        print("\nChoose a category:")
-        print("1. School")
-        print("2. Personal")
-        print("3. Family")
-        print("4. Friends/Relationships")
-        print("5. Future/Goals")
-        print("6. Other")
+        self.category_menu = tk.OptionMenu(
+            root,
+            self.category_var,
+            "School",
+            "Personal",
+            "Family",
+            "Friends/Relationships",
+            "Future/Goals",
+            "Other"
+        )
+        self.category_menu.pack(pady=5)
 
-        choice = self.get_number("Enter a number from 1-6: ", 1, 6)
+        self.urgency_label = tk.Label(root, text="Urgency (1-5):")
+        self.urgency_label.pack()
 
-        if choice == 1:
-            return "School"
-        elif choice == 2:
-            return "Personal"
-        elif choice == 3:
-            return "Family"
-        elif choice == 4:
-            return "Friends/Relationships"
-        elif choice == 5:
-            return "Future/Goals"
-        else:
-            return "Other"
+        self.urgency_entry = tk.Entry(root, width=10)
+        self.urgency_entry.pack(pady=5)
 
-    def collect_thoughts(self):
-        print("\nFirst, you will enter the thoughts you want to organize.")
-        print("You can enter up to 5 thoughts.")
+        self.importance_label = tk.Label(root, text="Importance (1-5):")
+        self.importance_label.pack()
 
-        total = self.get_number("\nHow many thoughts would you like to organize? ", 1, 5)
+        self.importance_entry = tk.Entry(root, width=10)
+        self.importance_entry.pack(pady=5)
 
-        for i in range(total):
-            print("\nThought", i + 1)
+        self.add_button = tk.Button(
+            root,
+            text="Add Thought",
+            command=self.add_thought
+        )
+        self.add_button.pack(pady=10)
 
-            text = input("Write your thought: ").strip()
-            while text == "":
-                print("Thought cannot be empty.")
-                text = input("Write your thought: ").strip()
+        self.organize_button = tk.Button(
+            root,
+            text="Organize Thoughts",
+            command=self.organize_thoughts
+        )
+        self.organize_button.pack(pady=10)
 
-            category = self.get_category()
-            urgency = self.get_number("How urgent is this thought? (1-5): ", 1, 5)
-            importance = self.get_number("How important is this thought? (1-5): ", 1, 5)
+        self.save_button = tk.Button(
+            root,
+            text="Save Report",
+            command=self.save_report
+        )
+        self.save_button.pack(pady=10)
 
-            thought = Thought(text, category, urgency, importance)
-            self.thoughts.append(thought)
+        self.output_box = tk.Text(root, width=75, height=18)
+        self.output_box.pack(pady=10)
+
+    def validate_number(self, value):
+        try:
+            number = int(value)
+            if number >= 1 and number <= 5:
+                return number
+            else:
+                return None
+        except:
+            return None
+
+    def add_thought(self):
+        text = self.thought_entry.get().strip()
+        category = self.category_var.get()
+        urgency = self.validate_number(self.urgency_entry.get())
+        importance = self.validate_number(self.importance_entry.get())
+
+        if text == "":
+            messagebox.showerror("Error", "Please enter a thought.")
+            return
+
+        if urgency is None:
+            messagebox.showerror("Error", "Urgency must be a number from 1 to 5.")
+            return
+
+        if importance is None:
+            messagebox.showerror("Error", "Importance must be a number from 1 to 5.")
+            return
+
+        thought = Thought(text, category, urgency, importance)
+        self.thoughts.append(thought)
+
+        messagebox.showinfo("Success", "Thought added successfully!")
+
+        self.thought_entry.delete(0, tk.END)
+        self.urgency_entry.delete(0, tk.END)
+        self.importance_entry.delete(0, tk.END)
 
     def sort_thoughts_by_priority(self):
         for i in range(len(self.thoughts)):
@@ -151,123 +150,66 @@ class ThoughtOrganizer:
             self.thoughts[i] = self.thoughts[max_index]
             self.thoughts[max_index] = temp
 
-    def organize_with_tree(self, node):
-        if node.suggestion is not None:
-            return node.suggestion
-
-        answer = self.get_yes_no(node.question)
-        self.responses.append((node.question, answer))
-
-        if answer == "yes":
-            return self.organize_with_tree(node.yes_branch)
+    def get_suggestion(self, thought):
+        if thought.priority_score >= 8:
+            return "Handle this soon. Break it into small steps and ask for support if needed."
+        elif thought.priority_score >= 5:
+            return "Schedule time to work on this after higher-priority tasks."
         else:
-            return self.organize_with_tree(node.no_branch)
+            return "Keep this in mind, but do not let it distract you from more urgent thoughts."
 
-    def create_action_plan(self):
-        plan = []
-
+    def organize_thoughts(self):
         if len(self.thoughts) == 0:
-            return plan
+            messagebox.showerror("Error", "Please add at least one thought first.")
+            return
 
-        top_thought = self.thoughts[0]
-
-        plan.append("1. Start with your highest priority thought: " + top_thought.text)
-        plan.append("2. Category: " + top_thought.category)
-        plan.append("3. Priority level: " + top_thought.get_priority_level())
-
-        if top_thought.priority_score >= 8:
-            plan.append("4. Recommended action: Handle this soon. Break it into small steps and ask for support if needed.")
-        elif top_thought.priority_score >= 5:
-            plan.append("4. Recommended action: Schedule time to work on this after any urgent tasks are handled.")
-        else:
-            plan.append("4. Recommended action: Keep this in mind, but do not let it distract you from higher priorities.")
-
-        return plan
-
-    def display_report(self, suggestion, plan):
-        print("\n===================================")
-        print("        THOUGHT ORGANIZER REPORT")
-        print("===================================")
-
-        print("\nYour thoughts ranked by priority:")
-        for i in range(len(self.thoughts)):
-            thought = self.thoughts[i]
-            print("\n" + str(i + 1) + ". " + thought.text)
-            print("   Category:", thought.category)
-            print("   Urgency:", thought.urgency)
-            print("   Importance:", thought.importance)
-            print("   Priority Score:", thought.priority_score)
-            print("   Priority Level:", thought.get_priority_level())
-
-        print("\nDecision Tree Responses:")
-        for question, answer in self.responses:
-            print("- " + question + " Answer: " + answer)
-
-        print("\nMain Suggestion:")
-        print(suggestion)
-
-        print("\nAction Plan:")
-        for step in plan:
-            print(step)
-
-    def save_report(self, suggestion, plan):
-        answer = self.get_yes_no("\nWould you like to save this report to a text file?")
-
-        if answer == "yes":
-            try:
-                file = open("thought_organizer_report.txt", "w")
-
-                file.write("THOUGHT ORGANIZER REPORT\n")
-                file.write("========================\n\n")
-
-                file.write("Thoughts ranked by priority:\n")
-
-                for i in range(len(self.thoughts)):
-                    thought = self.thoughts[i]
-                    file.write("\n" + str(i + 1) + ". " + thought.text + "\n")
-                    file.write("Category: " + thought.category + "\n")
-                    file.write("Urgency: " + str(thought.urgency) + "\n")
-                    file.write("Importance: " + str(thought.importance) + "\n")
-                    file.write("Priority Score: " + str(thought.priority_score) + "\n")
-                    file.write("Priority Level: " + thought.get_priority_level() + "\n")
-
-                file.write("\nDecision Tree Responses:\n")
-                for question, answer in self.responses:
-                    file.write("- " + question + " Answer: " + answer + "\n")
-
-                file.write("\nMain Suggestion:\n")
-                file.write(suggestion + "\n")
-
-                file.write("\nAction Plan:\n")
-                for step in plan:
-                    file.write(step + "\n")
-
-                file.close()
-                print("Your report was saved as thought_organizer_report.txt")
-
-            except:
-                print("The report could not be saved.")
-
-    def run(self):
-        print("Welcome to Thought Organizer!")
-        print("This program helps users organize overwhelming thoughts into clearer decisions.")
-        print("It uses objects, a decision tree, recursion, validation, and priority scoring.")
-
-        self.collect_thoughts()
         self.sort_thoughts_by_priority()
 
-        print("\nNow answer a few questions so the program can guide your next step.")
-        suggestion = self.organize_with_tree(self.root)
+        self.output_box.delete("1.0", tk.END)
 
-        plan = self.create_action_plan()
+        self.output_box.insert(tk.END, "THOUGHT ORGANIZER REPORT\n")
+        self.output_box.insert(tk.END, "========================\n\n")
 
-        self.display_report(suggestion, plan)
-        self.save_report(suggestion, plan)
+        for i in range(len(self.thoughts)):
+            thought = self.thoughts[i]
+
+            self.output_box.insert(tk.END, str(i + 1) + ". " + thought.text + "\n")
+            self.output_box.insert(tk.END, "Category: " + thought.category + "\n")
+            self.output_box.insert(tk.END, "Urgency: " + str(thought.urgency) + "\n")
+            self.output_box.insert(tk.END, "Importance: " + str(thought.importance) + "\n")
+            self.output_box.insert(tk.END, "Priority Score: " + str(thought.priority_score) + "\n")
+            self.output_box.insert(tk.END, "Priority Level: " + thought.get_priority_level() + "\n")
+            self.output_box.insert(tk.END, "Suggestion: " + self.get_suggestion(thought) + "\n\n")
+
+        self.output_box.insert(tk.END, "Highest Priority Thought:\n")
+        self.output_box.insert(tk.END, self.thoughts[0].text + "\n\n")
+        self.output_box.insert(tk.END, "Recommended First Step:\n")
+        self.output_box.insert(tk.END, self.get_suggestion(self.thoughts[0]))
+
+    def save_report(self):
+        report = self.output_box.get("1.0", tk.END).strip()
+
+        if report == "":
+            messagebox.showerror("Error", "Please organize thoughts before saving.")
+            return
+
+        try:
+            file = open("thought_organizer_gui_report.txt", "w")
+            file.write(report)
+            file.close()
+
+            messagebox.showinfo(
+                "Saved",
+                "Report saved as thought_organizer_gui_report.txt"
+            )
+        except:
+            messagebox.showerror("Error", "The report could not be saved.")
 
 
 def main():
-    organizer = ThoughtOrganizer()
-    organizer.run()
+    root = tk.Tk()
+    app = ThoughtOrganizerGUI(root)
+    root.mainloop()
 
 
 main()
